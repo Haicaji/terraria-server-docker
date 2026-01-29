@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # Terraria 游戏服务器
+  # 容器仅提供运行环境，服务器需手动启动
+  # ============================================
+  terraria:
+    build: .
+    image: terraria-hybrid-server
+    container_name: terraria_server
+    restart: unless-stopped
+    
+    # 端口映射
+    ports:
+      - "7777:7777"
+    
+    # 数据卷映射 - 迁移时只需复制 server_data 文件夹
+    volumes:
+      - ./server_data:/data
+    
+    # 允许交互式输入（进入容器操作）
+    stdin_open: true
+    tty: true
+    
+    # 网络配置
+    networks:
+      - terraria_net
+
+  # ============================================
+  # FRP 内网穿透客户端
+  # ============================================
+  frpc:
+    image: snowdreamtech/frpc:latest
+    container_name: frpc_client
+    restart: always
+    
+    # 挂载 FRP 配置文件到外部目录
+    volumes:
+      - ./frp/frpc.toml:/etc/frp/frpc.toml
+    
+    # 依赖 terraria 服务
+    depends_on:
+      - terraria
+    
+    # 网络配置
+    networks:
+      - terraria_net
+
+# 定义网络
+networks:
+  terraria_net:
+    driver: bridge

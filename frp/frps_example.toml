@@ -1,0 +1,17 @@
+# ============================================
+# FRP 服务端配置 (云服务器/VPS)
+# ============================================
+# 将此文件上传到VPS
+# 请将 YOUR_SECRET_TOKEN 替换为与 frpc.toml 相同的密钥
+
+# FRP 服务端监听端口
+bindPort = 7000
+
+# 认证密钥 (必须与客户端一致)
+auth.token = "YOUR_SECRET_TOKEN"
+
+# Web 监控面板 (可选)
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "admin123"

@@ -1,0 +1,26 @@
+# ============================================
+# FRP 客户端配置 (本地电脑)
+# ============================================
+# 请将下面的 YOUR_VPS_IP 替换为您的云服务器公网 IP
+# 请将 YOUR_SECRET_TOKEN 替换为您自定义的安全密钥
+
+# 连接到 FRP 服务端
+serverAddr = "YOUR_VPS_IP"
+serverPort = 7000
+auth.token = "YOUR_SECRET_TOKEN"
+
+# TCP 代理 - 游戏主连接
+[[proxies]]
+name = "terraria-tcp"
+type = "tcp"
+localIP = "terraria_server"
+localPort = 7777
+remotePort = 7777
+
+# UDP 代理 - 游戏数据传输
+[[proxies]]
+name = "terraria-udp"
+type = "udp"
+localIP = "terraria_server"
+localPort = 7777
+remotePort = 7777
