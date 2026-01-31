@@ -1,4 +1,4 @@
-# Terraria Docker 混合云部署
+﻿# Terraria Docker 混合云部署
 
 > 🎮 支持原版 (Vanilla) 和 tModLoader 双模服务器  
 > 🐳 容器化部署，一键迁移  
@@ -10,6 +10,8 @@
 terraria-server-docker/
 ├── Dockerfile              # Docker 镜像构建文件
 ├── docker-compose.yml      # 容器编排配置
+├── scripts/
+│   └── upgrade-vanilla.sh  # 原版服务器升级脚本
 ├── frp/
 │   ├── frpc.toml           # FRP 客户端配置 (本地)
 │   └── frps.toml           # FRP 服务端配置 (云服务器)
@@ -19,7 +21,8 @@ terraria-server-docker/
 └── server_data/            # 数据卷 (存档/Mod/配置)
     ├── Worlds/             # 世界存档
     ├── Mods/               # Mod 文件 (tModLoader)
-    └── Config/             # 配置文件
+    ├── Config/             # 配置文件
+    └── server/             # 服务器升级文件存放目录
 ```
 
 ---
@@ -106,10 +109,28 @@ cd /server/tmod
 ### 连接方式
 
 玩家使用您的 **VPS 公网 IP:7777** 连接游戏。
+---
+
+## 升级原版服务器
+
+容器内置了简单的升级脚本：
+
+### 升级步骤
+
+1. 从 [terraria.org](https://terraria.org/) 下载最新的 `PC Dedicated Server`
+2. 将 `terraria-server-xxxx.zip` 放入 `server_data/server/` 目录
+3. 进入容器执行升级：
+
+```bash
+docker exec -it terraria_server bash
+/server/upgrade-vanilla.sh
+```
+
+脚本会自动查找 `server_data/server/` 目录下的最新版本 zip 文件并完成升级。
 
 ---
 
-## 📦 迁移服务器
+## 迁移服务器
 
 ### 导出
 

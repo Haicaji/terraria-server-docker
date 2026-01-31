@@ -10,6 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # 安装必要依赖
 RUN apt-get update && apt-get install -y \
     wget \
+    curl \
     unzip \
     libicu70 \
     tmux \
@@ -36,9 +37,13 @@ RUN mkdir -p /server/tmod && \
     chmod +x /server/tmod/start-tModLoaderServer.sh
 
 # 创建数据目录并建立符号链接
-RUN mkdir -p /data/Worlds /data/Mods /data/Config && \
+RUN mkdir -p /data/Worlds /data/Mods /data/Config /data/server && \
     mkdir -p /root/.local/share && \
     ln -sf /data /root/.local/share/Terraria
+
+# 复制升级脚本
+COPY scripts/upgrade-vanilla.sh /server/upgrade-vanilla.sh
+RUN chmod +x /server/upgrade-vanilla.sh
 
 # 暴露端口
 EXPOSE 7777
